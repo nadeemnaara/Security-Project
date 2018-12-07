@@ -36,3 +36,15 @@ def safe_call(func_ptr, *args):
 # ------------------------------------------------------------------------
 
 
+def list_to_str(slist: list[str], sep: str):
+    """
+    convert list of strings to string
+    :param slist: the list to be converted
+    :param sep: separator character used for separate between the strings in the returned string
+    :return: string
+    """
+    string_input = str('')
+    for s in slist:
+        string_input += sep + s
+
+    return string_input
