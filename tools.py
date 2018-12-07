@@ -11,9 +11,10 @@ def try_catch_wrapper(func_ptr, *args):
     try:
         res = func_ptr(*args)
     except Exception as err:
-        err_msg = 'The following exception was raised when calling {}:\n' \
-                '{}'.format(func_ptr, str(err))
+        err_msg = 'The following exception was raised when calling {}():\n' \
+                '{}'.format(func_ptr.__name__, str(err))
         raise Exception(err_msg)
+
     return res
 
 # ------------------------------------------------------------------------
@@ -21,18 +22,25 @@ def try_catch_wrapper(func_ptr, *args):
 
 def safe_call(func_ptr, *args):
     """
-    calls a function that might raise an exception within try-catch scope.
+    calls a function that might raise an exception within try-catch scope and print the exception, if one was raised.
     :param func_ptr: a pointer to the function to call.
     :param args: the args passed to the function.
-    :return: 0 in case of no exceptions raised when calling the function, 1 otherwise.
+    :return: 0 in case of NO exceptions raised when calling the function, 1 otherwise.
     """
     rc = 0
     try:
         func_ptr(*args)
-    except Exception:
+    except Exception as err:
+        err_msg = '-ERROR- The following exception was raised when calling {}():\n' \
+                '{}'.format(func_ptr.__name__, str(err))
+        print(err_msg)
         rc = 1
+
     return rc
 
 # ------------------------------------------------------------------------
+
+
+
 
 
