@@ -2,6 +2,7 @@
 # global imports
 import socket
 import sys
+import zlib
 
 # local imports
 from tools import try_catch_wrapper, safe_call
@@ -45,7 +46,8 @@ class ConnectionEngine:
 
         print('-INFO- trying to send data to [ host:{} - port:{} ].'.format(self._dst_ip, self._dst_port))
 
-        try_catch_wrapper(self._socket.sendall, data_to_send)
+        data_to_send_compressed = zlib.compress(data_to_send)
+        try_catch_wrapper(self._socket.sendall, data_to_send_compressed)
 
         print('-INFO- the data was sent successfully to [ host:{} - port:{} ]\n.'.format(self._dst_ip, self._dst_port))
 

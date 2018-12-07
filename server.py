@@ -2,6 +2,7 @@
 # global imports
 import socket
 import sys
+import zlib
 
 # local imports
 from tools import try_catch_wrapper, safe_call
@@ -50,8 +51,9 @@ class Server:
             print('-INFO- a socket was received from {}'.format(received_from))
 
             received_packet = received_socket.recv(BUFF_SIZE)
+            received_packet_decompressed = zlib.decompress(received_packet)
 
-            print('-INFO- the data received : {}\n'.format(received_packet))
+            print('-INFO- the data received : {}\n'.format(received_packet_decompressed))
 
     # ------------------------------------------------------------------------
 
