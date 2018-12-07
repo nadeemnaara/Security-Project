@@ -14,11 +14,11 @@ BUFF_SIZE = 1024
 
 class Server:
 
-    def __init__(self, server_ip, server_port):
+    def __init__(self, server_ip: str, server_port: int):
         """
         class constructor..
-        :param server_ip: the ip of the server - as string.
-        :param server_port: the port to which the server will be listening - as integer.
+        :param server_ip: the ip of the server.
+        :param server_port: the port to which the server will be listening.
         """
         self._ip = server_ip
         self._port = server_port

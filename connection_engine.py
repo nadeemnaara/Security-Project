@@ -10,12 +10,12 @@ from tools import try_catch_wrapper, safe_call
 
 class ConnectionEngine:
 
-    def __init__(self, dst_ip, dst_port, timeout=None):
+    def __init__(self, dst_ip: str, dst_port: str, timeout=None):
         """
         class constructor, creates a socket connection with the specified ip and port.
         :param dst_ip: the host ip.
         :param dst_port: the port used for the connection.
-        :param timeout: maximum time to wait till connection is established.
+        :param timeout: maximum time to establish the connection - integer.
         :raise: an exception of type Exception will be raised in case of connection issues.
         """
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -35,10 +35,10 @@ class ConnectionEngine:
 
     # ------------------------------------------------------------------------
 
-    def send_data(self, data_to_send):
+    def send_data(self, data_to_send: str):
         """
         sends the data through the created socket.
-        :param data_to_send: a string, representing the data that will be sent.
+        :param data_to_send: representing the data that will be sent.
         :raise: an exception of type Exception will be raised in case of failure.
         """
         if not isinstance(data_to_send, str):

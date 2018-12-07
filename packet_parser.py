@@ -1,6 +1,4 @@
 
-# TODO: consider implementing an exception class which represents the exceptions raised from PacketParser.
-
 
 class PacketParser:
 
@@ -24,16 +22,16 @@ class PacketParser:
         returns the value of the nth field of the packet.
         :param n: the index of the parsed field. starting from 0.
         :return: the value of the nth field - as string.
-        :raise: :raise: an exception of type Exception will be raised in case of an error.
+        :raise: an exception of type Exception will be raised in case of an error.
         """
         packet_fields = self._packet_data.split(self._separator)
 
         if n + 1 > len(packet_fields):
-            raise Exception('Too few fields in the packet.')
+            raise Exception('too few fields in the packet.')
 
         nth_field = packet_fields[n]
         if not isinstance(nth_field, str):
-            raise Exception('Nth field has invalid value.')
+            raise Exception('the value of the field need to be of type str.')
 
         return nth_field
 
@@ -65,6 +63,17 @@ class PacketParser:
         return len(nth_field)
 
     # ------------------------------------------------------------------------
+
+    def number_of_fields(self):
+        """
+        returns the number of fields of the packet.
+        :return: number of fields - as integer.
+        """
+        fields = self._packet_data.split(self._separator)
+
+        return len(fields)
+
+
 
 
 if __name__ == '__main__':
