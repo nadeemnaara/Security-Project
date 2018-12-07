@@ -10,7 +10,7 @@ from tools import try_catch_wrapper, safe_call
 
 class ConnectionEngine:
 
-    def __init__(self, dst_ip: str, dst_port: str, timeout=None):
+    def __init__(self, dst_ip, dst_port, timeout=None):
         """
         class constructor, creates a socket connection with the specified ip and port.
         :param dst_ip: the host ip.
@@ -35,7 +35,7 @@ class ConnectionEngine:
 
     # ------------------------------------------------------------------------
 
-    def send_data(self, data_to_send: str):
+    def send_data(self, data_to_send):
         """
         sends the data through the created socket.
         :param data_to_send: representing the data that will be sent.

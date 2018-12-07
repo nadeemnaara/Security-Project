@@ -1,6 +1,6 @@
 
 
-def try_catch_wrapper(func_ptr: function, *args):
+def try_catch_wrapper(func_ptr, *args):
     """
     calls the function within try-catch scope.
     :param func_ptr: a pointer to the function to call.
@@ -20,7 +20,7 @@ def try_catch_wrapper(func_ptr: function, *args):
 # ------------------------------------------------------------------------
 
 
-def safe_call(func_ptr: function, *args):
+def safe_call(func_ptr, *args):
     """
     calls a function that might raise an exception within try-catch scope and print the exception, if one was raised.
     :param func_ptr: a pointer to the function to call.
@@ -41,7 +41,7 @@ def safe_call(func_ptr: function, *args):
 # ------------------------------------------------------------------------
 
 
-def assert_and_raise(condition, err_msg: str):
+def assert_and_raise(condition, err_msg):
     """
     asserts the given condition, in case of failure, an exception with the given error message will be raised.
     :param condition: the condition to assert.
