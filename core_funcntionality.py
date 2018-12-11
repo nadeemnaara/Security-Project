@@ -16,7 +16,7 @@ class CoreFunctionality:
         self._host = host
         self._port = port
         # 'engine_connection' is the engine that manage the connection between the client and server
-        #self.connection_engine = ConnectionEngine(host, port)
+        self.connection_engine = ConnectionEngine(host, port)
 
     def register_employee(self, input):
         """
@@ -26,9 +26,9 @@ class CoreFunctionality:
         """
         input.insert(0, self.CONST_OPCODE_REG)
         string_input = list_to_str(input, ':')
-        print(string_input)
+        #print(string_input)
         # ask the connection engine to send the data to the server
-        #self.connection_engine.send_data(string_input)
+        self.connection_engine.send_data(string_input)
 
 
 
@@ -40,9 +40,9 @@ class CoreFunctionality:
         """
         input.insert(0, self.CONST_OPCODE_REQ)
         string_input = list_to_str(input, ':')
-        print(string_input)
+        #print(string_input)
         # ask the connection engine to send the data to the server
-        #self.connection_engine.send_data(string_input)
+        self.connection_engine.send_data(string_input)
 
     def release_employee(self, input):
         """
@@ -52,6 +52,6 @@ class CoreFunctionality:
         """
         input.insert(0, self.CONST_OPCODE_REL)
         string_input = list_to_str(input, ':')
-        print(string_input)
+        #print(string_input)
         # ask the connection engine to send the data to the server
-        #self.connection_engine.send_data(string_input)
+        self.connection_engine.send_data(string_input)

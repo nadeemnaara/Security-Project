@@ -1,7 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import core_funcntionality as cf
-import time
+import copy
 
 
 class UI(tk.Frame):
@@ -9,8 +9,8 @@ class UI(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
         # init the main window
-        master.title('DEMO')
-        master.geometry('440x510')
+        master.title('Client')
+        master.geometry('500x550')
         master.resizable(False, False)
         master.configure(background='#003c71')
         self.grid()
@@ -58,11 +58,53 @@ class UI(tk.Frame):
         entries_tab1 = [tk.Entry(master, textvariable=fields_var_tab1[i]) for i in range(N)]
         for i, e in enumerate(entries_tab1):
             e.insert(0, fields_tab1[i])
-            e.config(fg='grey', font=('Clear Sans Light', 11))
-            string = fields_tab1[i]
-            e.bind('<FocusIn>', lambda event, x=e: self.on_entry_click(string, x))
-            e.bind('<FocusOut>', lambda event, y=e: self.on_focusout(string, y))
+            e.config(fg='grey', font=('Clear Sans Light', 12))
             e.pack()
+
+        entries_tab1[0].bind('<FocusIn>', lambda event, x=entries_tab1[0]: self.on_entry_click(fields_tab1[0], x))
+        entries_tab1[0].bind('<FocusOut>', lambda event, y=entries_tab1[0]: self.on_focusout(fields_tab1[0], y))
+
+        entries_tab1[1].bind('<FocusIn>', lambda event, x=entries_tab1[1]: self.on_entry_click(fields_tab1[1], x))
+        entries_tab1[1].bind('<FocusOut>', lambda event, y=entries_tab1[1]: self.on_focusout(fields_tab1[1], y))
+
+        entries_tab1[2].bind('<FocusIn>', lambda event, x=entries_tab1[2]: self.on_entry_click(fields_tab1[2], x))
+        entries_tab1[2].bind('<FocusOut>', lambda event, y=entries_tab1[2]: self.on_focusout(fields_tab1[2], y))
+
+        entries_tab1[3].bind('<FocusIn>', lambda event, x=entries_tab1[3]: self.on_entry_click(fields_tab1[3], x))
+        entries_tab1[3].bind('<FocusOut>', lambda event, y=entries_tab1[3]: self.on_focusout(fields_tab1[3], y))
+
+        entries_tab1[4].bind('<FocusIn>', lambda event, x=entries_tab1[4]: self.on_entry_click(fields_tab1[4], x))
+        entries_tab1[4].bind('<FocusOut>', lambda event, y=entries_tab1[4]: self.on_focusout(fields_tab1[4], y))
+
+        entries_tab1[5].bind('<FocusIn>', lambda event, x=entries_tab1[5]: self.on_entry_click(fields_tab1[5], x))
+        entries_tab1[5].bind('<FocusOut>', lambda event, y=entries_tab1[5]: self.on_focusout(fields_tab1[5], y))
+
+        entries_tab1[6].bind('<FocusIn>', lambda event, x=entries_tab1[6]: self.on_entry_click(fields_tab1[6], x))
+        entries_tab1[6].bind('<FocusOut>', lambda event, y=entries_tab1[6]: self.on_focusout(fields_tab1[6], y))
+
+        entries_tab1[7].bind('<FocusIn>', lambda event, x=entries_tab1[7]: self.on_entry_click(fields_tab1[7], x))
+        entries_tab1[7].bind('<FocusOut>', lambda event, y=entries_tab1[7]: self.on_focusout(fields_tab1[7], y))
+
+        entries_tab1[8].bind('<FocusIn>', lambda event, x=entries_tab1[8]: self.on_entry_click(fields_tab1[8], x))
+        entries_tab1[8].bind('<FocusOut>', lambda event, y=entries_tab1[8]: self.on_focusout(fields_tab1[8], y))
+
+        entries_tab1[9].bind('<FocusIn>', lambda event, x=entries_tab1[9]: self.on_entry_click(fields_tab1[9], x))
+        entries_tab1[9].bind('<FocusOut>', lambda event, y=entries_tab1[9]: self.on_focusout(fields_tab1[9], y))
+
+        entries_tab1[10].bind('<FocusIn>', lambda event, x=entries_tab1[10]: self.on_entry_click(fields_tab1[10], x))
+        entries_tab1[10].bind('<FocusOut>', lambda event, y=entries_tab1[10]: self.on_focusout(fields_tab1[10], y))
+
+        entries_tab1[11].bind('<FocusIn>', lambda event, x=entries_tab1[11]: self.on_entry_click(fields_tab1[11], x))
+        entries_tab1[11].bind('<FocusOut>', lambda event, y=entries_tab1[11]: self.on_focusout(fields_tab1[11], y))
+
+        entries_tab1[12].bind('<FocusIn>', lambda event, x=entries_tab1[12]: self.on_entry_click(fields_tab1[12], x))
+        entries_tab1[12].bind('<FocusOut>', lambda event, y=entries_tab1[12]: self.on_focusout(fields_tab1[12], y))
+
+        entries_tab1[13].bind('<FocusIn>', lambda event, x=entries_tab1[13]: self.on_entry_click(fields_tab1[13], x))
+        entries_tab1[13].bind('<FocusOut>', lambda event, y=entries_tab1[13]: self.on_focusout(fields_tab1[13], y))
+
+        entries_tab1[14].bind('<FocusIn>', lambda event, x=entries_tab1[14]: self.on_entry_click(fields_tab1[14], x))
+        entries_tab1[14].bind('<FocusOut>', lambda event, y=entries_tab1[14]: self.on_focusout(fields_tab1[14], y))
 
         button = tk.Button(master, text='Submit', width=15, command=lambda x=entries_tab1, op=1: self.on_submit(x, op))
         button.pack()
@@ -91,10 +133,44 @@ class UI(tk.Frame):
         entries_tab2 = [tk.Entry(master, textvariable=fields_var_tab2[i]) for i in range(N)]
         for i, e in enumerate(entries_tab2):
             e.insert(0, fields_tab2[i])
-            e.config(fg='grey', font=('Clear Sans Light', 11))
-            # e.bind('<FocusIn>', lambda event, x=e: self.on_entry_click(str(self.fields_text[i]), x))
-            # e.bind('<FocusOut>', lambda event, y=e: self.on_focusout(str(self.fields_text[i]), y))
+            e.config(fg='grey', font=('Clear Sans Light', 12))
             e.pack()
+
+        entries_tab2[0].bind('<FocusIn>', lambda event, x=entries_tab2[0]: self.on_entry_click(fields_tab2[0], x))
+        entries_tab2[0].bind('<FocusOut>', lambda event, y=entries_tab2[0]: self.on_focusout(fields_tab2[0], y))
+
+        entries_tab2[1].bind('<FocusIn>', lambda event, x=entries_tab2[1]: self.on_entry_click(fields_tab2[1], x))
+        entries_tab2[1].bind('<FocusOut>', lambda event, y=entries_tab2[1]: self.on_focusout(fields_tab2[1], y))
+
+        entries_tab2[2].bind('<FocusIn>', lambda event, x=entries_tab2[2]: self.on_entry_click(fields_tab2[2], x))
+        entries_tab2[2].bind('<FocusOut>', lambda event, y=entries_tab2[2]: self.on_focusout(fields_tab2[2], y))
+
+        entries_tab2[3].bind('<FocusIn>', lambda event, x=entries_tab2[3]: self.on_entry_click(fields_tab2[3], x))
+        entries_tab2[3].bind('<FocusOut>', lambda event, y=entries_tab2[3]: self.on_focusout(fields_tab2[3], y))
+
+        entries_tab2[4].bind('<FocusIn>', lambda event, x=entries_tab2[4]: self.on_entry_click(fields_tab2[4], x))
+        entries_tab2[4].bind('<FocusOut>', lambda event, y=entries_tab2[4]: self.on_focusout(fields_tab2[4], y))
+
+        entries_tab2[5].bind('<FocusIn>', lambda event, x=entries_tab2[5]: self.on_entry_click(fields_tab2[5], x))
+        entries_tab2[5].bind('<FocusOut>', lambda event, y=entries_tab2[5]: self.on_focusout(fields_tab2[5], y))
+
+        entries_tab2[6].bind('<FocusIn>', lambda event, x=entries_tab2[6]: self.on_entry_click(fields_tab2[6], x))
+        entries_tab2[6].bind('<FocusOut>', lambda event, y=entries_tab2[6]: self.on_focusout(fields_tab2[6], y))
+
+        entries_tab2[7].bind('<FocusIn>', lambda event, x=entries_tab2[7]: self.on_entry_click(fields_tab2[7], x))
+        entries_tab2[7].bind('<FocusOut>', lambda event, y=entries_tab2[7]: self.on_focusout(fields_tab2[7], y))
+
+        entries_tab2[8].bind('<FocusIn>', lambda event, x=entries_tab2[8]: self.on_entry_click(fields_tab2[8], x))
+        entries_tab2[8].bind('<FocusOut>', lambda event, y=entries_tab2[8]: self.on_focusout(fields_tab2[8], y))
+
+        entries_tab2[9].bind('<FocusIn>', lambda event, x=entries_tab2[9]: self.on_entry_click(fields_tab2[9], x))
+        entries_tab2[9].bind('<FocusOut>', lambda event, y=entries_tab2[9]: self.on_focusout(fields_tab2[9], y))
+
+        entries_tab2[10].bind('<FocusIn>', lambda event, x=entries_tab2[10]: self.on_entry_click(fields_tab2[10], x))
+        entries_tab2[10].bind('<FocusOut>', lambda event, y=entries_tab2[10]: self.on_focusout(fields_tab2[10], y))
+
+        entries_tab2[11].bind('<FocusIn>', lambda event, x=entries_tab2[11]: self.on_entry_click(fields_tab2[11], x))
+        entries_tab2[11].bind('<FocusOut>', lambda event, y=entries_tab2[11]: self.on_focusout(fields_tab2[11], y))
 
         button = tk.Button(master, text='Submit', width=15, command=lambda x=entries_tab2, op=2: self.on_submit(x, op))
         button.pack()
@@ -119,10 +195,38 @@ class UI(tk.Frame):
         entries_tab3 = [tk.Entry(master, textvariable=fields_var_tab3[i]) for i in range(N)]
         for i, e in enumerate(entries_tab3):
             e.insert(0, fields_tab3[i])
-            e.config(fg='grey', font=('Clear Sans Light', 11))
-            # e.bind('<FocusIn>', lambda event, x=e: self.on_entry_click(str(self.fields_tab3[i]), x))
-            # e.bind('<FocusOut>', lambda event, y=e: self.on_focusout(str(self.fields_tab3[i]), y))
+            e.config(fg='grey', font=('Clear Sans Light', 12))
             e.pack()
+
+        entries_tab3[0].bind('<FocusIn>', lambda event, x=entries_tab3[0]: self.on_entry_click(fields_tab3[0], x))
+        entries_tab3[0].bind('<FocusOut>', lambda event, y=entries_tab3[0]: self.on_focusout(fields_tab3[0], y))
+
+        entries_tab3[1].bind('<FocusIn>', lambda event, x=entries_tab3[1]: self.on_entry_click(fields_tab3[1], x))
+        entries_tab3[1].bind('<FocusOut>', lambda event, y=entries_tab3[1]: self.on_focusout(fields_tab3[1], y))
+
+        entries_tab3[2].bind('<FocusIn>', lambda event, x=entries_tab3[2]: self.on_entry_click(fields_tab3[2], x))
+        entries_tab3[2].bind('<FocusOut>', lambda event, y=entries_tab3[2]: self.on_focusout(fields_tab3[2], y))
+
+        entries_tab3[3].bind('<FocusIn>', lambda event, x=entries_tab3[3]: self.on_entry_click(fields_tab3[3], x))
+        entries_tab3[3].bind('<FocusOut>', lambda event, y=entries_tab3[3]: self.on_focusout(fields_tab3[3], y))
+
+        entries_tab3[4].bind('<FocusIn>', lambda event, x=entries_tab3[4]: self.on_entry_click(fields_tab3[4], x))
+        entries_tab3[4].bind('<FocusOut>', lambda event, y=entries_tab3[4]: self.on_focusout(fields_tab3[4], y))
+
+        entries_tab3[5].bind('<FocusIn>', lambda event, x=entries_tab3[5]: self.on_entry_click(fields_tab3[5], x))
+        entries_tab3[5].bind('<FocusOut>', lambda event, y=entries_tab3[5]: self.on_focusout(fields_tab3[5], y))
+
+        entries_tab3[6].bind('<FocusIn>', lambda event, x=entries_tab3[6]: self.on_entry_click(fields_tab3[6], x))
+        entries_tab3[6].bind('<FocusOut>', lambda event, y=entries_tab3[6]: self.on_focusout(fields_tab3[6], y))
+
+        entries_tab3[7].bind('<FocusIn>', lambda event, x=entries_tab3[7]: self.on_entry_click(fields_tab3[7], x))
+        entries_tab3[7].bind('<FocusOut>', lambda event, y=entries_tab3[7]: self.on_focusout(fields_tab3[7], y))
+
+        entries_tab3[8].bind('<FocusIn>', lambda event, x=entries_tab3[8]: self.on_entry_click(fields_tab3[8], x))
+        entries_tab3[8].bind('<FocusOut>', lambda event, y=entries_tab3[8]: self.on_focusout(fields_tab3[8], y))
+
+        entries_tab3[9].bind('<FocusIn>', lambda event, x=entries_tab3[9]: self.on_entry_click(fields_tab3[9], x))
+        entries_tab3[9].bind('<FocusOut>', lambda event, y=entries_tab3[9]: self.on_focusout(fields_tab3[9], y))
 
         button = tk.Button(master, text='Submit', width=15, command=lambda x=entries_tab3, op=3: self.on_submit(x, op))
         button.pack()

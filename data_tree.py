@@ -110,7 +110,8 @@ class DataTree:
             VERF: VREF_DEP,
             RD: RD_DEP,
             QA: QA_DEP,
-            HR: HR_DEP
+            HR: HR_DEP,
+            FDW: [FDW]
         },
         'bank_no': {
             JPM: JPM_SEC
@@ -120,10 +121,11 @@ class DataTree:
     IL_SITE = {
         'dep': {
             VERF: VREF_DEP,
-            RD: RD_DEP,
-            QA: QA_DEP,
-            HR: HR_DEP,
-            MRKT: MRKT_DEP
+            RD  : RD_DEP,
+            QA  : QA_DEP,
+            HR  : HR_DEP,
+            MRKT: MRKT_DEP,
+            FDL : [FDL]
         },
         'bank_no': {
             HAPOALIM: HAPOALIM_SEC,
@@ -133,8 +135,9 @@ class DataTree:
 
     ENG_SITE = {
         'dep': {
-            HR: HR_DEP,
-            MRKT: MRKT_DEP
+            HR  : HR_DEP,
+            MRKT: MRKT_DEP,
+            FDW : [FDW]
         },
         'bank_no': {
             NATWEST: NATWEST_SEC

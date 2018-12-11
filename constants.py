@@ -35,12 +35,6 @@ MRKT_M  = 'Manager'
 MRKT_TW = 'Technical Writer'
 MRKT_CS = 'Customer Support'
 
-# Jobs By Title
-SENIOR_MANAGERS = [SW_SM, VERF_SM]
-JUNIOR_MANAGERS = [SW_JM, VERF_JM]
-MANAGER         = [HR_M, QA_M, MRKT_M]
-ENDINEERS       = [SW_S, SW_J, VERF_S, VERF_J]
-STUDENTS        = [SW99, QA99]
 # Items
 LAPTOP = 'Laptop'
 CELL = 'Cell Phone'
@@ -52,6 +46,7 @@ HEADPHONES = 'Headphones'
 MANAGER_EQ_PACKET = [LAPTOP, MOUSE, CELL, TABLET, TAG]
 NORMAL_EQ_PACKET  = [LAPTOP, MOUSE, TAG]
 HR_EQ_PACKET      = [LAPTOP, TAG]
+
 # Finance Dep.
 FDW = 'FDW'
 FDL = 'FDL'

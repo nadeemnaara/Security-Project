@@ -85,8 +85,3 @@ class DataBase:
             #print(select)
 
         return list(select)
-
-
-
-db = DataBase()
-print(db.query([USA, 'dep', VERF, 'job_title']))
