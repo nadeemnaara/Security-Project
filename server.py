@@ -51,9 +51,9 @@ class Server:
             print('-INFO- a socket was received from {}'.format(received_from))
 
             received_packet = received_socket.recv(BUFF_SIZE)
-            received_packet_decompressed = zlib.decompress(received_packet)
+            #received_packet_decompressed = zlib.decompress(received_packet)
 
-            print('-INFO- the data received : {}\n'.format(received_packet_decompressed))
+            print('-INFO- the data received : {}\n'.format(received_packet))
 
     # ------------------------------------------------------------------------
 

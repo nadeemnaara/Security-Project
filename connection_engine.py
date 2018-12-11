@@ -46,8 +46,8 @@ class ConnectionEngine:
 
         print('-INFO- trying to send data to [ host:{} - port:{} ].'.format(self._dst_ip, self._dst_port))
 
-        data_to_send_compressed = zlib.compress(data_to_send)
-        try_catch_wrapper(self._socket.sendall, data_to_send_compressed)
+        # data_to_send_compressed = zlib.compress(data_to_send)
+        try_catch_wrapper(self._socket.sendall, data_to_send)
 
         print('-INFO- the data was sent successfully to [ host:{} - port:{} ]\n.'.format(self._dst_ip, self._dst_port))
 

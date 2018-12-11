@@ -13,6 +13,7 @@ class CoreFunctionality:
         :param port: the port used for the connection.
         :raise: an exception of type Exception will be raised in case of connection issues (connection_engine).
         """
+        print('host', host, 'port', port)
         self._host = host
         self._port = port
         # 'engine_connection' is the engine that manage the connection between the client and server
@@ -26,7 +27,7 @@ class CoreFunctionality:
         """
         input.insert(0, self.CONST_OPCODE_REG)
         string_input = list_to_str(input, ':')
-        #print(string_input)
+        print(string_input)
         # ask the connection engine to send the data to the server
         self.connection_engine.send_data(string_input)
 
