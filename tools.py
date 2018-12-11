@@ -79,10 +79,10 @@ class Log:
         """
         to_print_len = len(to_print)
         line_format = ''
-        for i in range(to_print_len + 5):
+        for i in range(to_print_len + 10):
             line_format += '='
         print(line_format)
-        print('## {}'.format(to_print))
+        print('###### {}'.format(to_print))
         print(line_format)
 
     # ------------------------------------------------------------------------
@@ -99,7 +99,7 @@ class Log:
         """
         to_print_len = len(to_print)
         line_format = ''
-        for i in range(to_print_len + 5):
+        for i in range(to_print_len + 10):
             line_format += '-'
         print(line_format)
         print('--INFO-- {}'.format(to_print))

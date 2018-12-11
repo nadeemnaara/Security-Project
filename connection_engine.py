@@ -2,10 +2,9 @@
 # global imports
 import socket
 import sys
-import zlib
 
 # local imports
-from tools import try_catch_wrapper, safe_call
+from tools import try_catch_wrapper, safe_call, Log as log
 
 
 class ConnectionEngine:
@@ -13,8 +12,8 @@ class ConnectionEngine:
     def __init__(self, dst_ip, dst_port, timeout=None):
         """
         class constructor, creates a socket connection with the specified ip and port.
-        :param dst_ip: the host ip.
-        :param dst_port: the port used for the connection.
+        :param dst_ip: the host ip - str.
+        :param dst_port: the port used for the connection. - str
         :param timeout: maximum time to establish the connection - integer.
         :raise: an exception of type Exception will be raised in case of connection issues.
         """
@@ -26,11 +25,11 @@ class ConnectionEngine:
         if timeout is not None:
             self._socket.settimeout(timeout)
 
-        print('-INFO- trying to connect to [ host:{} - port:{} ].'.format(self._dst_ip, self._dst_port))
+        log.stage('trying to connect to [ host:{} - port:{} ].'.format(self._dst_ip, self._dst_port))
 
         try_catch_wrapper(self._socket.connect, (self._dst_ip, self._dst_port))
 
-        print('-INFO- a connection with [ host:{} - port:{} ] was established.'.format(self._dst_ip, self._dst_ip))
+        log.info('a connection with [ host:{} - port:{} ] was established.'.format(self._dst_ip, self._dst_ip))
         self._is_connected = True
 
     # ------------------------------------------------------------------------
@@ -38,18 +37,17 @@ class ConnectionEngine:
     def send_data(self, data_to_send):
         """
         sends the data through the created socket.
-        :param data_to_send: representing the data that will be sent.
+        :param data_to_send: representing the data that will be sent - str.
         :raise: an exception of type Exception will be raised in case of failure.
         """
         if not isinstance(data_to_send, str):
             raise Exception('the sent data need to be of type str')
 
-        print('-INFO- trying to send data to [ host:{} - port:{} ].'.format(self._dst_ip, self._dst_port))
+        log.info('trying to send data to [ host:{} - port:{} ].'.format(self._dst_ip, self._dst_port))
 
-        data_to_send_compressed = zlib.compress(data_to_send)
-        try_catch_wrapper(self._socket.sendall, data_to_send_compressed)
+        try_catch_wrapper(self._socket.sendall, data_to_send)
 
-        print('-INFO- the data was sent successfully to [ host:{} - port:{} ]\n.'.format(self._dst_ip, self._dst_port))
+        log.info('the data was sent successfully to [ host:{} - port:{} ].\n'.format(self._dst_ip, self._dst_port))
 
     # ------------------------------------------------------------------------
 
@@ -60,6 +58,7 @@ class ConnectionEngine:
         """
         # closing the socket multiple times causes errors.
         if self._is_connected:
+            log.info('closing the connection...')
             rc = safe_call(self._socket.close)
 
         if rc == 0:
@@ -84,7 +83,7 @@ if __name__ == '__main__':
     server_ip = sys.argv[1]
     server_port = sys.argv[2]
     ce = ConnectionEngine(dst_ip=server_ip, dst_port=server_port)
-    ce.send_data('Helloooooooooooooooow')
+    ce.send_data('1:nadeem:naara:205496342:IL:nadeemn@hotmail.com:male:Verification:' + 'SW student:john cena:TLV:26/06/2018:AA:12:122:12000:NA')
 
     ce.close_connection()
 
