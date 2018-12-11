@@ -80,8 +80,10 @@ class DataBase:
 
     def query(self, keys):
         select = self.tree
-        for k in keys:
-            select = select[k]
-            #print(select)
+        try:
+            for k in keys:
+                select = select[k]
+        except KeyError:
+            return []
 
         return list(select)

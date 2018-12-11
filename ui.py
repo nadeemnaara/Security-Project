@@ -5,7 +5,7 @@ import copy
 
 
 class UI(tk.Frame):
-    core = cf.CoreFunctionality('', 0)
+    core = cf.CoreFunctionality('132.68.37.119', 8888)
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
         # init the main window
