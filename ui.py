@@ -17,14 +17,14 @@ class PopUpWindow:
 
         self.e2 = tk.Entry(top)
         self.e2.grid(row=2, column=1)
-
-        b = tk.Button(top, text='Ok', command=self.cleanup)
+        b = tk.Button(top, text='Ok', command=self.ok)
         b.grid(row=3, sticky=tk.W+tk.E+tk.N+tk.S, padx=5, pady=5, columnspan=2, rowspan=1)
-
+        self.host = ''
+        self.port = ''
         top.resizable(False, False)
         top.lift()
 
-    def cleanup(self):
+    def ok(self):
         host = self.host = self.e1.get()
         port = self.port = self.e2.get()
         if host == '' or port == '':
@@ -42,10 +42,14 @@ class UI(tk.Frame):
         master.resizable(False, False)
         master.configure(background='#003c71')
         self.grid()
-        self.create_tabs(master)
-        self.popup = PopUpWindow(master)
-        master.wait_window(self.popup.top)
 
+        while True:
+            self.popup = PopUpWindow(master)
+            master.wait_window(self.popup.top)
+            if self.popup.host != '' and self.popup.port != '':
+                break
+
+        self.create_tabs(master)
         self.core = cf.CoreFunctionality(self.popup.host, self.popup.port)
 
     def create_tabs(self, master):
