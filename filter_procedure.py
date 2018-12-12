@@ -1,20 +1,22 @@
 
 # global imports
-from tools import assert_and_raise
+import re
 
 # local imports
 from packet_parser import PacketParser
+from database import DataBase
+from tools import assert_and_raise
 
 
 class FilterProcedure(PacketParser):
 
-    __deps = {'department': ['country'],
-              'office_loc': ['country', 'dep'],
-              'items_issued': ['country', 'dep', 'job_title'],
-              'job_title': ['country', 'dep'],
-              'bank_no': ['country'],
-              'bank_section': ['country', 'bank_no'],
-              'money_amount': ['country', 'dep', 'job_title']
+    __deps = {'dep': [],
+              'office_loc': ['dep'],
+              'items_issued': ['dep', 'job_title'],
+              'job_title': ['dep'],
+              'bank_no': [],
+              'bank_section': ['bank_no'],
+              'money_amount': ['dep', 'job_title']
               }
 
     def __init__(self, data, packet_id, separator):
@@ -40,15 +42,30 @@ class FilterProcedure(PacketParser):
         err = ''
         try:
             parsed_packet = self.parse()
-            opcode = parsed_packet[0]  # fixed offset.
+            opcode = parsed_packet[0][1]
+
+            # variables to be used in the for loop bellow.
             first_and_last_name = []
             dates = []
             helper_dict = {'country': '', 'dep': '', 'bank_no': '', 'job_title': ''}
-            for field, value in parsed_packet:
+
+            for field, value in parsed_packet[1:]:
+                # problematic names for dependencies check.
+                if re.match('^[f,l]name', field):
+                    field = 'name'
+                if re.match('^(sub|due)_date', field):
+                    field = 'date'
+                if re.match('^appoval', field):
+                    field = 'approval'
+
                 if field == 'name':
                     first_and_last_name.append(value)
                 if field in helper_dict.keys():
                     helper_dict[field] = value
+
+                if field not in self.__deps.keys():
+                    continue
+
                 if field == 'date':
                     dates.append(value)
                     if len(dates) == 2:
@@ -56,18 +73,23 @@ class FilterProcedure(PacketParser):
                         d2, m2, y2 = map(int, dates[1].split('/'))
                         assert_and_raise(y2 >= y1 and m2 >= m1 and d2 >= d1)
                 elif field == 'signature' and opcode == '1':
-                    first_lit, last_lit = first_and_last_name
-                    assert_and_raise(value == first_lit + last_lit, 'signature is {}, expected: {}'.format(value,
-                                                                                                           first_lit + last_lit))
+                    expected_sig = first_and_last_name[0][0] + first_and_last_name[1][0]
+                    assert_and_raise(value == expected_sig, 'signature is {}, expected: {}'.format(value, expected_sig))
+
                 elif field == 'approval':
                     app_dep = value.split('-')[0]
-                    assert_and_raise(app_dep in DataBase.query([country]), 'one of the approval fields not valid.')
+                    assert_and_raise(app_dep in DataBase.query(helper_dict['country']), 'one of the approval fields not valid.')
                 else:
-                    deps_values = [helper_dict[dep] for dep in self.__deps[field]]
-                    assert_and_raise(value in DataBase.query(dapes_values), 'value of field: {} not valid'.format(field))
+                    deps_values = [helper_dict['country']]
+                    for dep in self.__deps[field]:
+                        deps_values += [dep, helper_dict[dep]]
+                    assert_and_raise(value in DataBase.query(deps_values + [field]), 'field:{} value:{}, expected one of:{}'.format(field,
+                                                                                                                          value,
+                                                                                                     DataBase.query(deps_values)))
 
         except Exception as exp:
             err = str(exp)
+            raise exp
             action = 'DROP'
             rc = 1
 
@@ -119,3 +141,9 @@ class FilterProcedure(PacketParser):
         return rc
 
     # ------------------------------------------------------------------------
+
+
+if __name__ == '__main__':
+    msg = '1:nadeem:naara:205496342:IL:nadeemn@hotmail.com:male:Verification:SW student:john cena:TLV:26/06/2018:AA:12:122:12000:NA'
+    fp = FilterProcedure(msg, 777, ':')
+    fp.run()

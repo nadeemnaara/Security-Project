@@ -2,6 +2,7 @@ from data_tree import *
 
 
 class DataBase:
+
     tree = DataTree.company
 
     # departments_table = {
@@ -78,8 +79,9 @@ class DataBase:
     #     'country'       : COUNTRIES
     # }
 
-    def query(self, keys):
-        select = self.tree
+    @staticmethod
+    def query(keys):
+        select = DataBase.tree
         try:
             for k in keys:
                 select = select[k]

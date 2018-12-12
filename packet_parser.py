@@ -12,13 +12,13 @@ from tools import assert_and_raise
 class PacketParser:
 
     # the expected fields of a packet and the regx of it, based on the op code.
-    __packets_structure = {'1': ['name', 'name', 'id', 'country', 'email', 'gender', 'dep', 'job_title',
+    __packets_structure = {'1': ['opcode', 'fname', 'lname', 'id', 'country', 'email', 'gender', 'dep', 'job_title',
                                  'manager', 'office_loc', 'date', 'items_issued', 'bank_no', 'bank_section',
                                  'bank_acc', 'signature'],
-                           '2': ['id', 'name', 'job_title', 'date', 'date', 'purpose', 'money_amount',
+                           '2': ['opcode', 'id', 'name', 'job_title', 'sub_date', 'due_date', 'purpose', 'money_amount',
                                  'bank_no', 'bank_section', 'bank_acc', 'signature'],
-                           '3': ['id', 'name', 'job_title', 'dep', 'reason_of_leaving', 'last_day', 'country',
-                                 'approval', 'approval']}
+                           '3': ['opcode', 'id', 'name', 'job_title', 'dep', 'reason_of_leaving', 'last_day', 'country',
+                                 'approval_1', 'approval_2']}
 
     __fields_regx = {'name': '^[A-Z,a-z]{1,10}$',
                      'id': '^[0-9]{9}$',
@@ -91,25 +91,36 @@ class PacketParser:
 
         opcode = fields_values[0]
         assert_and_raise(opcode in self.__packets_structure.keys(), 'opcode is not valid')
-        fields_names = [name for name in self.__packets_structure[opcode]]
-        assert_and_raise(len(fields_values[1:]) == len(fields_names), 'number of fields not valid')
 
-        parsed_dict = dict(zip(fields_names, fields_values[1:]))
+        fields_names = [name for name in self.__packets_structure[opcode]]
+        assert_and_raise(len(fields_values) == len(fields_names), 'number of fields not valid')
+
+        parsed_dict = dict(zip(fields_names, fields_values))
 
         # asserting the value of each field based on its regx.
         validate_banking_info = False
-        for field in self.__packets_structure[opcode]:
+        for field, value in zip(fields_names, fields_values):
+            if field ==  'opcode':
+                continue
+            # problematic keys for the regx
+            if re.match('^[f,l]name', field):
+                field = 'name'
+            elif re.match('^(sub|due)_date', field):
+                field = 'date'
+            elif re.match('^appoval', field):
+                field = 'approval'
 
+            # needed for bank info validation.
             if field == 'country':
-                country = parsed_dict[field]  # storing the value of the field 'country'.
+                country = value
             if re.match('bank', field) is not None:
                 validate_banking_info = True
                 break
             else:
                 regx = self.__fields_regx[field]
 
-            condition = re.match(regx, parsed_dict[field]) is not None
-            assert_and_raise(condition, 'field -{}- did not satisfy its regx, value:{} regx:{}'.format(field, parsed_dict[field], regx))
+            condition = re.match(regx, value) is not None
+            assert_and_raise(condition, 'field -{}- did not satisfy its regx, value:{} regx:{}'.format(field, value, regx))
 
         # asserting banking info - if exists.
         if validate_banking_info:
@@ -126,13 +137,13 @@ class PacketParser:
             assert_and_raise(condition, 'field -{}- did not satisfy its regx, value:{} regx:{}'.format(field,
                                                                                                        parsed_dict[field],
                                                                                                        regx))
-        return parsed_dict
+        return list(zip(fields_names, fields_values))
 
     # ------------------------------------------------------------------------
 
 
 if __name__ == '__main__':
     str = sys.argv[1]
-    parser = PacketParser('1:nadeem:naara:205496342:IL:nadeemn@hotmail.com:male:Verification:'
+    parser = PacketParser('1:nadeem:naara:205496322:IL:nadeemn@hotmail.com:male:Verification:'
                           + 'SW student:john cena:TLV:26/06/2018:AA:12:122:12000:NA', ':')
     print(parser.parse())

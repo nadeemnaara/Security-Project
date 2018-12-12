@@ -44,8 +44,10 @@ class ConnectionEngine:
             raise Exception('the sent data need to be of type str')
 
         log.info('trying to send data to [ host:{} - port:{} ].'.format(self._dst_ip, self._dst_port))
-
-        try_catch_wrapper(self._socket.sendall, data_to_send)
+        rc = safe_call(self._socket.sendall, data_to_send)
+        if rc != 0:
+            self.close_connection()
+            log.info('failed to establish a connection to {}'.format(self._dst_ip))
 
         log.info('the data was sent successfully to [ host:{} - port:{} ].\n'.format(self._dst_ip, self._dst_port))
 
@@ -64,16 +66,6 @@ class ConnectionEngine:
         if rc == 0:
             self._is_connected = False
         return rc
-
-    # ------------------------------------------------------------------------
-
-    def __del__(self):
-        """
-        class destructor, closes the socket if still open.
-        """
-        # closing the socket multiple times causes errors.
-        if self._is_connected:
-            self.close_connection()
 
     # ------------------------------------------------------------------------
 

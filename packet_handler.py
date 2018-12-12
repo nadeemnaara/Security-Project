@@ -50,9 +50,9 @@ class PacketHandler(Thread):
         (dst_ip, dst_port) = self._host
 
         print('forwarding to c')
-        engine = ConnectionEngine(dst_ip, dst_port)
-        engine.send_data(self._packet)
-        engine.close_connection()
+        # engine = ConnectionEngine(dst_ip, dst_port)
+        # engine.send_data(self._packet)
+        # engine.close_connection()
 
         sys.exit()
     # ------------------------------------------------------------------------
