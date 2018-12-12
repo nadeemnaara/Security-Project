@@ -40,27 +40,30 @@ class Server:
         :param activate_filtering: bolean, if set to True, we will activate filtering procedure on
         each received packet.
         """
-        self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        # binding the socket to the ip and port of the server.
-        try_catch_wrapper(self._socket.bind, (self._ip, self._port))
+            # binding the socket to the ip and port of the server.
+            try_catch_wrapper(self._socket.bind, (self._ip, self._port))
 
-        self._socket.listen(MAX_QUEUED_CONNECTIONS)
+            self._socket.listen(MAX_QUEUED_CONNECTIONS)
 
-        log.stage('the server is up and listening on port {}'.format(self._port))
-        self._is_connected = True
+            log.stage('the server is up and listening on port {}'.format(self._port))
+            self._is_connected = True
 
-        while True:
-            received_socket, received_from = self._socket.accept()
-            packet_id = random.randint(100, 1000)
-            received_packet = received_socket.recv(BUFF_SIZE)
+            while True:
+                received_socket, received_from = self._socket.accept()
+                packet_id = random.randint(100, 1000)
+                received_packet = received_socket.recv(BUFF_SIZE)
 
-            log.info('the following socket was received from {}: packet-id={}  packet-data={}.'.format(received_from,
-                                                                                                       packet_id,
-                                                                                                       received_packet))
+                log.info('the following socket was received from {}: packet-id={}  packet-data={}.'.format(received_from,
+                                                                                                           packet_id,
+                                                                                                           received_packet))
 
-            packet_handler = PacketHandler(received_packet, packet_id, ('0','1'), SEPARATOR, activate_filtering)
-            self._active_threads.append(packet_handler)
+                packet_handler = PacketHandler(received_packet, packet_id, ('0','1'), SEPARATOR, activate_filtering)
+                self._active_threads.append(packet_handler)
+        finally:
+            self.terminate()
 
     # ------------------------------------------------------------------------
 
@@ -77,26 +80,24 @@ class Server:
                 t.join()
 
             rc = safe_call(self._socket.close)
+            if rc == 0:
+                log.info('server was terminated successfully.')
+            else:
+                log.info('an error occurred while trying to terminate the server.')
 
         if rc == 0:
             self._is_connected = False
 
     # ------------------------------------------------------------------------
 
-    def __del__(self):
-        """
-        class destructor, closes the server socket if still open.
-        """
-        if self._is_connected:
-            self.terminate()
-
-
 
 if __name__ == '__main__':
 
     ip = sys.argv[1]
     port = sys.argv[2]
-    flag = sys.argv[3] == '-f'
+    flag = False
+    if len(sys.argv) > 3:
+        flag = sys.argv[3] == '-f'
     server = Server(server_ip=ip, server_port=int(port))
     server.run(flag)
 
