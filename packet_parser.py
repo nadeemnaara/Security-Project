@@ -51,9 +51,7 @@ class PacketParser:
         :param packet_data: a string representing the data of the packet.
         :param separator: the separator used to separate the fields of the packet - str.
         """
-        # removing leading and trailing separators in packet_data.
-        self._packet_data = packet_data.strip(separator)
-
+        self._packet_data = packet_data
         self._separator = separator
 
     # ------------------------------------------------------------------------
@@ -144,6 +142,6 @@ class PacketParser:
 
 if __name__ == '__main__':
     str = sys.argv[1]
-    parser = PacketParser('1:nadeem:naara:205496322:IL:nadeemn@hotmail.com:male:Verification:'
-                          + 'SW student:john cena:TLV:26/06/2018:AA:12:122:12000:NA', ':')
+    parser = PacketParser('1:nadeem:naara:205496322:m:male:Verification:::::::'
+                          , ':')
     print(parser.parse())
