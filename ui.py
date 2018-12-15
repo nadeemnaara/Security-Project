@@ -45,7 +45,7 @@ class UI(tk.Frame):
         self.popup = PopUpWindow(master)
         master.wait_window(self.popup.top)
         self.create_tabs(master)
-        #self.core = cf.CoreFunctionality(self.popup.host, self.popup.port)
+        self.core = cf.CoreFunctionality(self.popup.host, self.popup.port)
 
     def create_tabs(self, master):
         self.notebook = ttk.Notebook(master)
