@@ -1,10 +1,9 @@
 # global imports
-from threading import Thread
-import sys
+from threading import *
+import threading
 
 # local imports
 from filter_procedure import FilterProcedure
-from connection_engine import ConnectionEngine
 
 
 class PacketHandler(Thread):
@@ -29,9 +28,6 @@ class PacketHandler(Thread):
         self._separator = separator
         self._activate_filtering = activate_filtering
 
-        # creates a thread to execute run().
-        self.start()
-
     # ------------------------------------------------------------------------
 
     def run(self):
@@ -41,20 +37,20 @@ class PacketHandler(Thread):
         """
         if self._activate_filtering:
             filter_procedure = FilterProcedure(self._packet, self._packet_id, self._separator)
+            print('thread id = {}, size={}'.format(self.getName(), len(self._packet)))
             rc = filter_procedure.run()
-
             if rc != 0:
-                sys.exit()  # the packet has been dropped. force the thread to stop.
+                return  # the packet has been dropped.
 
         # now, we will be forwarding the packet to its destination.
         (dst_ip, dst_port) = self._host
 
         print('forwarding to c')
+
         # engine = ConnectionEngine(dst_ip, dst_port)
         # engine.send_data(self._packet)
         # engine.close_connection()
 
-        sys.exit()
     # ------------------------------------------------------------------------
 
 

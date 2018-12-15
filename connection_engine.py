@@ -1,11 +1,13 @@
 
 # global imports
 import socket
-import sys
+from time import sleep
 
 # local imports
 from tools import try_catch_wrapper, safe_call, Log as log
 
+# global constants
+SLEEP_TIME = 3
 
 class ConnectionEngine:
 
@@ -44,12 +46,13 @@ class ConnectionEngine:
             raise Exception('the sent data need to be of type str')
 
         log.info('trying to send data to [ host:{} - port:{} ].'.format(self._dst_ip, self._dst_port))
-        rc = safe_call(self._socket.sendall, data_to_send)
+        rc = safe_call(self._socket.sendall, data_to_send.encode())
         if rc != 0:
+            log.info('failed to send data to {}'.format(self._dst_ip))
             self.close_connection()
-            log.info('failed to establish a connection to {}'.format(self._dst_ip))
-
-        log.info('the data was sent successfully to [ host:{} - port:{} ].\n'.format(self._dst_ip, self._dst_port))
+        else:
+            log.info('the data was sent successfully to [ host:{} - port:{} ].\n'.format(self._dst_ip, self._dst_port))
+            sleep(SLEEP_TIME)
 
     # ------------------------------------------------------------------------
 
@@ -59,6 +62,7 @@ class ConnectionEngine:
         :return: 0 in case of success, 1 otherwise.
         """
         # closing the socket multiple times causes errors.
+        rc = 0
         if self._is_connected:
             log.info('closing the connection...')
             rc = safe_call(self._socket.close)
@@ -72,11 +76,16 @@ class ConnectionEngine:
 
 if __name__ == '__main__':
 
-    server_ip = sys.argv[1]
-    server_port = sys.argv[2]
+    server_ip = '132.68.36.13'
+    server_port = '8222'
     ce = ConnectionEngine(dst_ip=server_ip, dst_port=server_port)
     ce.send_data('1:nadeem:naara:205496342:IL:nadeemn@hotmail.com:male:Verification:' + 'SW student:john cena:TLV:26/06/2018:AA:12:122:12000:NA')
-
+    sleep(10)
+    print('##########################################################')
+    ce.send_data('000000000000000000deemn@hotmail.com:male:Verification:' + 'SW student:john cena:TLV:26/06/2018:AA:12:122:12000:NA')
+    print('##########################################################')
+    sleep(10)
+    ce.send_data('11111111111')
     ce.close_connection()
 
 

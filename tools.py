@@ -28,8 +28,8 @@ def safe_call(func_ptr, *args):
     rc = 0
     try:
         func_ptr(*args)
-    except Exception:
-        rc = 1
+    except Exception as exp:
+        raise exp
     return rc
 
 # ------------------------------------------------------------------------

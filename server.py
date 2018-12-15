@@ -11,7 +11,7 @@ from packet_handler import PacketHandler
 # global constants
 MAX_QUEUED_CONNECTIONS = 1  # the max number of queued connections in the socket.
 SEPARATOR = ':'
-BUFF_SIZE = 200
+BUFF_SIZE = 1024
 
 
 class Server:
@@ -51,10 +51,13 @@ class Server:
             log.stage('the server is up and listening on port {}'.format(self._port))
             self._is_connected = True
 
+            received_socket, received_from = self._socket.accept()
             while True:
-                received_socket, received_from = self._socket.accept()
                 packet_id = random.randint(100, 1000)
-                received_packet = received_socket.recv(BUFF_SIZE)
+                received_packet = received_socket.recv(BUFF_SIZE).decode()
+
+                if not received_packet:
+                    continue
 
                 log.info('the following socket was received from {}: packet-id={}  packet-data={}.'.format(received_from,
                                                                                                            packet_id,
@@ -62,6 +65,7 @@ class Server:
 
                 packet_handler = PacketHandler(received_packet, packet_id, ('0','1'), SEPARATOR, activate_filtering)
                 self._active_threads.append(packet_handler)
+                packet_handler.start()
         finally:
             self.terminate()
 
@@ -72,6 +76,7 @@ class Server:
         closes the server's socket - but first should wait for all the threads to finish.
         :raise: an exception of type Exception will be raised in case of an error.
         """
+        rc = 0
         if self._is_connected:
             log.stage('server terminating...')
 

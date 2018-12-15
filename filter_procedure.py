@@ -81,15 +81,15 @@ class FilterProcedure(PacketParser):
                     assert_and_raise(app_dep in DataBase.query(helper_dict['country']), 'one of the approval fields not valid.')
                 else:
                     deps_values = [helper_dict['country']]
+
                     for dep in self.__deps[field]:
                         deps_values += [dep, helper_dict[dep]]
                     assert_and_raise(value in DataBase.query(deps_values + [field]), 'field:{} value:{}, expected one of:{}'.format(field,
                                                                                                                           value,
-                                                                                                     DataBase.query(deps_values)))
+                                                                                                     DataBase.query(deps_values + [field])))
 
         except Exception as exp:
             err = str(exp)
-            raise exp
             action = 'DROP'
             rc = 1
 
