@@ -42,19 +42,14 @@ class UI(tk.Frame):
         master.resizable(False, False)
         master.configure(background='#003c71')
         self.grid()
-
-        while True:
-            self.popup = PopUpWindow(master)
-            master.wait_window(self.popup.top)
-            if self.popup.host != '' and self.popup.port != '':
-                break
-
+        self.popup = PopUpWindow(master)
+        master.wait_window(self.popup.top)
         self.create_tabs(master)
-        self.core = cf.CoreFunctionality(self.popup.host, self.popup.port)
+        #self.core = cf.CoreFunctionality(self.popup.host, self.popup.port)
 
     def create_tabs(self, master):
         self.notebook = ttk.Notebook(master)
-        self.notebook.pack(expand=1, fill='both')
+        self.notebook.grid()
 
         self.tab1 = ttk.Frame(self.notebook)
         self.tab2 = ttk.Frame(self.notebook)
@@ -83,15 +78,22 @@ class UI(tk.Frame):
         N = len(fields)
 
         tab_frame = tk.Frame(master)
-        tab_frame.pack()
+        tab_frame.grid(row=0, column=0, sticky='nswe')
         entries_tab = [tk.Entry(tab_frame) for _ in range(N)]
         for i, e in enumerate(entries_tab):
             tk.Label(tab_frame, text=fields[i]).grid(row=i, column=0, sticky=tk.W)
             e.grid(row=i, column=1)
 
+        button = tk.Button(tab_frame, text='clear', width=15,
+                           command=lambda x=entries_tab: self.clear(x))
+        button.grid(row=N, sticky=tk.W + tk.E + tk.N + tk.S, padx=5, pady=5, columnspan=2, rowspan=1)
         button = tk.Button(tab_frame, text='Submit', width=15,
                            command=lambda x=entries_tab, op=tab_n: self.on_submit(x, op))
-        button.grid(row=N, sticky=tk.W + tk.E + tk.N + tk.S, padx=5, pady=5, columnspan=2, rowspan=1)
+        button.grid(row=N+1, sticky=tk.W + tk.E + tk.N + tk.S, padx=5, pady=5, columnspan=2, rowspan=1)
+        button = tk.Button(tab_frame, text='auto fill', width=15,
+                           command=lambda x=entries_tab, op=tab_n: self.on_debug(x, op))
+        button.grid(row=N+2, sticky=tk.W + tk.E + tk.N + tk.S, padx=5, pady=5, columnspan=2, rowspan=1)
+
 
     @staticmethod
     def on_entry_click(event, entry):
@@ -105,6 +107,22 @@ class UI(tk.Frame):
         if entry.get() == '':
             entry.insert(0, event)
             entry.config(fg='grey')
+
+    def on_debug(self, es, op):
+        fields = {
+            1: ['cs', 'cs', '123456789', 'israel', 'cs@gmail.com', 'male', 'R&D', 'SW Student', 'John Travolta',
+                 'Haifa', '1/1/2019', 'Laptop', '12', '701', '12345678', 'cscs'],
+            2: [],
+            3: []
+        }
+
+        for i, e in enumerate(es):
+            e.insert(0, fields[op][i])
+
+    @staticmethod
+    def clear(es):
+        for e in es:
+            e.delete(0, 'end')
 
     def on_submit(self, entries_list, op_code):
         str_list = [e.get() for e in entries_list]
