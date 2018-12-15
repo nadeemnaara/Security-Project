@@ -84,8 +84,15 @@ class DataBase:
         select = DataBase.tree
         try:
             for k in keys:
+                if not isinstance(select, dict):
+                    raise Exception('invalid path!')
                 select = select[k]
         except KeyError:
             return []
 
         return list(select)
+
+
+db = DataBase()
+
+print(HFA in db.query([IL, 'dep', QA, 'office_loc']))

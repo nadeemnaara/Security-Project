@@ -105,12 +105,13 @@ class DataTree:
         'manager': ['Stevie Wonders']
     }
 
+    USA_SEA = {'office_loc': [SEA]}
     USA_SITE = {
         'dep': {
-            VERF: VREF_DEP,
-            RD: RD_DEP,
-            QA: QA_DEP,
-            HR: HR_DEP,
+            VERF: {**VREF_DEP, **USA_SEA},
+            RD: {**RD_DEP, **USA_SEA},
+            QA: {**QA_DEP, **USA_SEA},
+            HR: {**HR_DEP, **USA_SEA},
             FDW: [FDW]
         },
         'bank_no': {
@@ -118,13 +119,15 @@ class DataTree:
         }
     }
 
+    IL_HFA = {'office_loc': [HFA]}
+    IL_TLV = {'office_loc': [TLV]}
     IL_SITE = {
         'dep': {
-            VERF: VREF_DEP,
-            RD  : RD_DEP,
-            QA  : QA_DEP,
-            HR  : HR_DEP,
-            MRKT: MRKT_DEP,
+            VERF: {**VREF_DEP, **IL_HFA},
+            RD  : {**RD_DEP, **IL_HFA},
+            QA  : {**QA_DEP, **IL_HFA},
+            HR  : {**HR_DEP, **IL_TLV},
+            MRKT: {**MRKT_DEP, **IL_TLV},
             FDL : [FDL]
         },
         'bank_no': {
@@ -133,10 +136,11 @@ class DataTree:
         }
     }
 
+    ENG_LCY = {'office_loc': [LCY]}
     ENG_SITE = {
         'dep': {
-            HR  : HR_DEP,
-            MRKT: MRKT_DEP,
+            HR  : {**HR_DEP, **ENG_LCY},
+            MRKT: {**MRKT_DEP, **ENG_LCY},
             FDW : [FDW]
         },
         'bank_no': {

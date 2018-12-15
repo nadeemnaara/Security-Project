@@ -67,3 +67,9 @@ JPM_SEC      = ['200', '603']
 IL_BANKS    = [HAPOALIM, LEUMI]
 USA_BANKS   = [JPM]
 ENG_BANKS   = [NATWEST]
+
+# cities
+TLV = 'TLV'  # Tel Aviv
+HFA = 'HFA'  # Haifa
+SEA = 'SEA'  # Seattle
+LCY = 'LCY'  # London
